@@ -30,8 +30,8 @@ import java.util.Arrays;
 import android.os.Build;
 import android.os.Bundle;
 
-import org.apache.cordova.file.FileUtils;
-import org.apache.cordova.file.LocalFilesystemURL;
+//import org.apache.cordova.file.FileUtils;
+//import org.apache.cordova.file.LocalFilesystemURL;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -366,7 +366,7 @@ public class Capture extends CordovaPlugin {
         // Get the uri of the audio clip
         Uri data = intent.getData();
         // create a file object from the uri
-        req.results.put(createMediaFile(data));
+        //req.results.put(createMediaFile(data));
 
         if (req.results.length() >= req.limit) {
             // Send Uri back to JavaScript for listening to audio
@@ -379,7 +379,7 @@ public class Capture extends CordovaPlugin {
 
     public void onImageActivityResult(Request req) {
         // Add image to results
-        req.results.put(createMediaFile(imageUri));
+        //req.results.put(createMediaFile(imageUri));
 
         checkForDuplicateImage();
 
@@ -410,8 +410,8 @@ public class Capture extends CordovaPlugin {
             pendingRequests.resolveWithFailure(req, createErrorObject(CAPTURE_NO_MEDIA_FILES, "Error: data is null"));
         }
         else {
-            req.results.put(createMediaFile(data));
-
+            //req.results.put(createMediaFile(data));
+			req.results.put(data);
             if (req.results.length() >= req.limit) {
                 // Send Uri back to JavaScript for viewing video
                 pendingRequests.resolveWithSuccess(req);
@@ -450,9 +450,9 @@ public class Capture extends CordovaPlugin {
             } catch (IllegalAccessException e) {
             }
         }
-        FileUtils filePlugin = (FileUtils) pm.getPlugin("File");
-        LocalFilesystemURL url = filePlugin.filesystemURLforLocalPath(fp.getAbsolutePath());
-
+        //FileUtils filePlugin = (FileUtils) pm.getPlugin("File");
+        //LocalFilesystemURL url = filePlugin.filesystemURLforLocalPath(fp.getAbsolutePath());
+		/*
         try {
             // File properties
             obj.put("name", fp.getName());
@@ -478,7 +478,7 @@ public class Capture extends CordovaPlugin {
         } catch (JSONException e) {
             // this will never happen
             e.printStackTrace();
-        }
+        } */
         return obj;
     }
 
