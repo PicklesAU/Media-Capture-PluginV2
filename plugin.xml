@@ -36,6 +36,7 @@ xmlns:rim="http://www.blackberry.com/ns/widgets"
     </engines>
 
     <dependency id="cordova-plugin-file" version="^4.3.3" />
+    <dependency id="cordova-plugin-compat" version="^1.0.0" />
 
     <js-module src="www/CaptureAudioOptions.js" name="CaptureAudioOptions">
         <clobbers target="CaptureAudioOptions" />
