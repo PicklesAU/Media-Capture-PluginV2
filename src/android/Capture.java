@@ -136,6 +136,14 @@ public class Capture extends CordovaPlugin {
         }
         else if (action.equals("captureVideo")) {
             /* ari added permissions [s] */
+              if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                     this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
+              } else {
+                     String [] vperms = { Manifest.permission.READ_EXTERNAL_STORAGE };
+                     cordova.requestPermissions(this, 0, vperms);
+                     this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
+              }
+               /*
             this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
                 .then(status => {
                      if (status.hasPermission) {
@@ -147,7 +155,7 @@ public class Capture extends CordovaPlugin {
                                    });
                      }
                 }   
-            /* ari added permissions [e] */
+             ari added permissions [e] */
         }
         else {
             return false;
