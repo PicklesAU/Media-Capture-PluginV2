@@ -111,6 +111,11 @@ public class Capture extends CordovaPlugin {
                     }
                 }
             }
+            if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                     String [] vperms = { Manifest.permission.READ_EXTERNAL_STORAGE };
+                     cordova.requestPermissions(this, 0, vperms);
+            }
         } catch (NameNotFoundException e) {
             // We are requesting the info for our package, so this should
             // never be caught
@@ -135,27 +140,7 @@ public class Capture extends CordovaPlugin {
             this.captureImage(pendingRequests.createRequest(CAPTURE_IMAGE, options, callbackContext));
         }
         else if (action.equals("captureVideo")) {
-            /* ari added permissions [s] */
-              if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                     this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
-              } else {
-                     String [] vperms = { Manifest.permission.READ_EXTERNAL_STORAGE };
-                     cordova.requestPermissions(this, 0, vperms);
-                     this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
-              }
-               /*
-            this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
-                .then(status => {
-                     if (status.hasPermission) {
-                            this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
-                     } else {
-                            this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
-                                   .then(status =>{
-                                          if(status.hasPermission) this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
-                                   });
-                     }
-                }   
-             ari added permissions [e] */
+            this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
         }
         else {
             return false;
