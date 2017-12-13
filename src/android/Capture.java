@@ -101,6 +101,12 @@ public class Capture extends CordovaPlugin {
 
         cameraPermissionInManifest = false;
         try {
+            if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
+            } else {
+                     String [] vperms = { Manifest.permission.READ_EXTERNAL_STORAGE };
+                     cordova.requestPermissions(this, 0, vperms);
+            }
+               
             PackageManager packageManager = this.cordova.getActivity().getPackageManager();
             String[] permissionsInPackage = packageManager.getPackageInfo(this.cordova.getActivity().getPackageName(), PackageManager.GET_PERMISSIONS).requestedPermissions;
             if (permissionsInPackage != null) {
@@ -111,11 +117,7 @@ public class Capture extends CordovaPlugin {
                     }
                 }
             }
-            if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            } else {
-                     String [] vperms = { Manifest.permission.READ_EXTERNAL_STORAGE };
-                     cordova.requestPermissions(this, 0, vperms);
-            }
+            
         } catch (NameNotFoundException e) {
             // We are requesting the info for our package, so this should
             // never be caught
