@@ -135,7 +135,19 @@ public class Capture extends CordovaPlugin {
             this.captureImage(pendingRequests.createRequest(CAPTURE_IMAGE, options, callbackContext));
         }
         else if (action.equals("captureVideo")) {
-            this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
+            /* ari added permissions [s] */
+            this.androidPermissions.hasPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
+                .then(status => {
+                     if (status.hasPermission) {
+                            this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
+                     } else {
+                            this.androidPermissions.requestPermission(this.androidPermissions.PERMISSION.READ_EXTERNAL_STORAGE)
+                                   .then(status =>{
+                                          if(status.hasPermission) this.captureVideo(pendingRequests.createRequest(CAPTURE_VIDEO, options, callbackContext));
+                                   });
+                     }
+                }   
+            /* ari added permissions [e] */
         }
         else {
             return false;
