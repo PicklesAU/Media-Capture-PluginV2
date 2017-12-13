@@ -100,13 +100,7 @@ public class Capture extends CordovaPlugin {
         // check the package info to determine if the permission is present.
 
         cameraPermissionInManifest = false;
-        try {
-            if (cordova.hasPermission(Manifest.permission.READ_EXTERNAL_STORAGE)) {
-            } else {
-                     String [] vperms = { Manifest.permission.READ_EXTERNAL_STORAGE };
-                     cordova.requestPermissions(this, 0, vperms);
-            }
-               
+        try { 
             PackageManager packageManager = this.cordova.getActivity().getPackageManager();
             String[] permissionsInPackage = packageManager.getPackageInfo(this.cordova.getActivity().getPackageName(), PackageManager.GET_PERMISSIONS).requestedPermissions;
             if (permissionsInPackage != null) {
@@ -298,16 +292,23 @@ public class Capture extends CordovaPlugin {
      * Sets up an intent to capture video.  Result handled by onActivityResult()
      */
     private void captureVideo(Request req) {
+        boolean needExternalStoragePermission =
+            !PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
+           
         if(cameraPermissionInManifest && !PermissionHelper.hasPermission(this, Manifest.permission.CAMERA)) {
             PermissionHelper.requestPermission(this, req.requestCode, Manifest.permission.CAMERA);
         } else {
-            Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+            if (needExternalStoragePermission) {
+                PermissionHelper.requestPermission(this, req.requestCode, Manifest.permission.READ_EXTERNAL_STORAGE);
+            } else {
+                   Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
 
-            if(Build.VERSION.SDK_INT > 7){
-                intent.putExtra("android.intent.extra.durationLimit", req.duration);
-                intent.putExtra("android.intent.extra.videoQuality", req.quality);
+                   if(Build.VERSION.SDK_INT > 7){
+                       intent.putExtra("android.intent.extra.durationLimit", req.duration);
+                       intent.putExtra("android.intent.extra.videoQuality", req.quality);
+                   }
+                   this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
             }
-            this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
         }
     }
 
