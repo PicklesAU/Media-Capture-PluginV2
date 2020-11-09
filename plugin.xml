@@ -73,17 +73,17 @@ xmlns:rim="http://www.blackberry.com/ns/widgets"
                 <param name="android-package" value="org.apache.cordova.mediacapture.Capture"/>
             </feature>
         </config-file>
-
-        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
-            <application android:requestLegacyExternalStorage="true" />
-        </edit-config>
-
-      <config-file target="AndroidManifest.xml" parent="/*">
+      
+        <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="android.permission.RECORD_AUDIO" />
             <uses-permission android:name="android.permission.RECORD_VIDEO"/>
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
+
+        <edit-config file="AndroidManifest.xml" target="application" mode="merge">
+            <application android:requestLegacyExternalStorage="true" />
+        </edit-config>
 
         <source-file src="src/android/Capture.java" target-dir="src/org/apache/cordova/mediacapture" />
         <source-file src="src/android/FileHelper.java" target-dir="src/org/apache/cordova/mediacapture" />
