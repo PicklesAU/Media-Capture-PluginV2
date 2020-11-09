@@ -81,7 +81,7 @@ xmlns:rim="http://www.blackberry.com/ns/widgets"
             <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
         </config-file>
 
-        <edit-config file="AndroidManifest.xml" target="application" mode="merge">
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:requestLegacyExternalStorage="true" />
         </edit-config>
 
