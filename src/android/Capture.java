@@ -306,6 +306,9 @@ public class Capture extends CordovaPlugin {
                    if(Build.VERSION.SDK_INT > 7){
                        intent.putExtra("android.intent.extra.durationLimit", req.duration);
                        intent.putExtra("android.intent.extra.videoQuality", req.quality);
+                          
+                       String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+		         intent.putExtra(android.provider.MediaStore.EXTRA_OUTPUT, Environment.getExternalStorageDirectory().getPath()+"DIY_"+teimestamp+".mp4");
                    }
                    this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
             }
