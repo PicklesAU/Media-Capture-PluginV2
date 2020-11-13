@@ -408,10 +408,10 @@ public class Capture extends CordovaPlugin {
     public void onVideoActivityResult(Request req, Intent intent) {
         Uri data = null;
 
-        if (intent != null){
+        //if (intent != null){
             // Get the uri of the video clip
-            data = intent.getData();
-        }
+        //    data = intent.getData();
+        //}
 
         if( data == null){
             File movie = new File(getTempDirectoryPath(), "Capture.avi");
