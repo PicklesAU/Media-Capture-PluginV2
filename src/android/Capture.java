@@ -435,7 +435,7 @@ public class Capture extends CordovaPlugin {
         if (intent != null){
             // Get the uri of the video clip
             data = intent.getData();
-	    File fp = webView.getResourceApi().mapUriToFile(data)
+	    File fp = webView.getResourceApi().mapUriToFile(data);
             File movie = new File(getTempDirectoryPath(), "DIY.mp4");
 	    copyFile(movie, fp);
             data = Uri.fromFile(movie);
