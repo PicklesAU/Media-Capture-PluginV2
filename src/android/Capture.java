@@ -29,6 +29,13 @@ import java.util.Arrays;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.nio.ByteBuffer;
+import java.nio.channels.FileChannel;
+
 import android.os.Build;
 import android.os.Bundle;
 
@@ -404,14 +411,35 @@ public class Capture extends CordovaPlugin {
             captureImage(req);
         }
     }
+	
+    public void copyFile(File src, File dst) throws IOException
+	{
+	    FileChannel inChannel = new FileInputStream(src).getChannel();
+	    FileChannel outChannel = new FileOutputStream(dst).getChannel();
+	    try
+	    {
+		inChannel.transferTo(0, inChannel.size(), outChannel);
+	    }
+	    finally
+	    {
+		if (inChannel != null)
+		    inChannel.close();
+		if (outChannel != null)
+		    outChannel.close();
+	    }
+    }
 
     public void onVideoActivityResult(Request req, Intent intent) {
         Uri data = null;
 
-        //if (intent != null){
+        if (intent != null){
             // Get the uri of the video clip
-        //    data = intent.getData();
-        //}
+            data = intent.getData();
+		
+            File movie = new File(getTempDirectoryPath(), "DIY.mp4");
+	    copyFile(movie, data);
+            data = Uri.fromFile(movie);
+        }
 
         if( data == null){
             File movie = new File(getTempDirectoryPath(), "Capture.avi");
