@@ -437,8 +437,12 @@ public class Capture extends CordovaPlugin {
             data = intent.getData();
 	    File fp = webView.getResourceApi().mapUriToFile(data);
             File movie = new File(getTempDirectoryPath(), "DIY.mp4");
-	    copyFile(movie, fp);
-            data = Uri.fromFile(movie);
+	    try {
+		copyFile(movie, fp);
+            	data = Uri.fromFile(movie);
+	    } catch (IOException e) {
+		LOG.d(LOG_TAG, "Error: Copy video file");
+	    }
         }
 
         if( data == null){
