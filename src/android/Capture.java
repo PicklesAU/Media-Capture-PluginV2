@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
 
@@ -99,6 +100,40 @@ public class Capture extends CordovaPlugin {
 //        else
 //            LOG.d(LOG_TAG, "ERROR: You must use the CordovaInterface for this to work correctly. Please implement it in your activity");
 //    }
+	
+    private static final String[] storagePermissions = new String[]{
+        Manifest.permission.READ_EXTERNAL_STORAGE,
+        Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
+
+    private boolean isMissingPermissions(Request req, ArrayList<String> permissions) {
+        ArrayList<String> missingPermissions = new ArrayList<>();
+        for (String permission: permissions) {
+            if (!PermissionHelper.hasPermission(this, permission)) {
+                missingPermissions.add(permission);
+            }
+        }
+
+        boolean isMissingPermissions = missingPermissions.size() > 0;
+        if (isMissingPermissions) {
+            String[] missing = missingPermissions.toArray(new String[missingPermissions.size()]);
+            PermissionHelper.requestPermissions(this, req.requestCode, missing);
+        }
+        return isMissingPermissions;
+    }
+
+    private boolean isMissingStoragePermissions(Request req) {
+        return isMissingPermissions(req, new ArrayList<>(Arrays.asList(storagePermissions)));
+    }
+
+    private boolean isMissingCameraPermissions(Request req) {
+        ArrayList<String> cameraPermissions = new ArrayList<>(Arrays.asList(storagePermissions));
+        if (cameraPermissionInManifest) {
+            cameraPermissions.add(Manifest.permission.CAMERA);
+        }
+        return isMissingPermissions(req, cameraPermissions);
+    }
 
     @Override
     protected void pluginInitialize() {
@@ -301,7 +336,16 @@ public class Capture extends CordovaPlugin {
      * Sets up an intent to capture video.  Result handled by onActivityResult()
      */
     private void captureVideo(Request req) {
-        boolean needExternalStoragePermission =
+	if (isMissingCameraPermissions(req)) return;
+	Intent intent = new Intent(android.provider.MediaStore.ACTION_VIDEO_CAPTURE);
+
+	if(Build.VERSION.SDK_INT > 7){
+		    intent.putExtra("android.intent.extra.durationLimit", req.duration);
+		    intent.putExtra("android.intent.extra.videoQuality", req.quality);
+	}
+	this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
+        /*
+	    boolean needExternalStoragePermission =
             !PermissionHelper.hasPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE);
            
         if(cameraPermissionInManifest && !PermissionHelper.hasPermission(this, Manifest.permission.CAMERA)) {
@@ -321,7 +365,7 @@ public class Capture extends CordovaPlugin {
                    }
                    this.cordova.startActivityForResult((CordovaPlugin) this, intent, req.requestCode);
             }
-        }
+        } */
     }
 
     /**
