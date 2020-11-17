@@ -68,6 +68,7 @@ xmlns:rim="http://www.blackberry.com/ns/widgets"
     
     <!-- android -->
     <platform name="android">
+        <custom-preference name="android-manifest/application/@android:requestLegacyExternalStorage" value="true" />
         <config-file target="res/xml/config.xml" parent="/*">
             <feature name="Capture" >
                 <param name="android-package" value="org.apache.cordova.mediacapture.Capture"/>
