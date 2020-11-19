@@ -140,22 +140,22 @@ xmlns:rim="http://www.blackberry.com/ns/widgets"
             </feature>
         </config-file>
       
-        <preference name="CAMERA_USAGE_DESCRIPTION" default="This app needs camera access"/>
+        <preference name="CAMERA_USAGE_DESCRIPTION" default="This app need camera access to take pictures"/>
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
             <string>$CAMERA_USAGE_DESCRIPTION</string>
         </config-file>
 
-        <preference name="MICROPHONE_USAGE_DESCRIPTION" default="This app needs microphone access"/>
+        <preference name="MICROPHONE_USAGE_DESCRIPTION" default="This app need microphone access to record sounds"/>
         <config-file target="*-Info.plist" parent="NSMicrophoneUsageDescription">
             <string>$MICROPHONE_USAGE_DESCRIPTION</string>
         </config-file>
 
-        <preference name="PHOTOLIBRARY_ADD_USAGE_DESCRIPTION" default="This app needs write-access to photo library"/>
+        <preference name="PHOTOLIBRARY_ADD_USAGE_DESCRIPTION" default="This app need photo library access to get pictures from there"/>
         <config-file target="*-Info.plist" parent="NSPhotoLibraryAddUsageDescription">
             <string>$PHOTOLIBRARY_ADD_USAGE_DESCRIPTION</string>
         </config-file>
 
-        <preference name="PHOTOLIBRARY_USAGE_DESCRIPTION" default="This app needs read/write-access photo library access"/>
+        <preference name="PHOTOLIBRARY_USAGE_DESCRIPTION" default="This app need photo library access to get pictures from there"/>
         <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
             <string>$PHOTOLIBRARY_USAGE_DESCRIPTION</string>
         </config-file>
